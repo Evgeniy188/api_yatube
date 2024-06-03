@@ -9,7 +9,7 @@ class PostSerializer(serializers.ModelSerializer):
         read_only=True,
         default=serializers.CurrentUserDefault(),
     )
-  
+
     class Meta:
         model = Post
         fields = ('text', 'pub_date', 'author', 'image', 'group')
@@ -21,7 +21,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only=True,
         default=serializers.CurrentUserDefault(),
     )
-  
+
     class Meta:
         model = Comment
         fields = ('post', 'text', 'creadted', 'author')
