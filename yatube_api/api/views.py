@@ -13,7 +13,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
-    querset = Group.objects.all()
+    queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
