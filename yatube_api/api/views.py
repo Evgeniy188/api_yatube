@@ -12,9 +12,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
-        if post.author == self.request.user:
-            serializer.save(author=self.request.user)
-        return Response(serializer.errors, status=HTTPStatus.FORBIDDEN)
+        if post.author != self.request.user:
+            return Response(serializer.errors, status=HTTPStatus.FORBIDDEN)
+        serializer.save(author=self.request.user)
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -31,6 +31,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
-        if post.author == self.requeset.user:
-            serializer.save(post=post, author=self.request.user)
-        return Response(serializer.errors, status=HTTPStatus.FORBIDDEN)
+        if post.author != self.request.user:
+            return Response(serializer.errors, status=HTTPStatus.FORBIDDEN)
+        serializer.save(post=post, author=self.request.user)
