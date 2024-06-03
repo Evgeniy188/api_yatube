@@ -1,4 +1,6 @@
+from http import HTTPStatus
 from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 from rest_framework import viewsets
 from posts.models import Post, Group
 from .serializers import PostSerializer, CommentSerializer, GroupSerializer
@@ -9,7 +11,10 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
+        if post.author == self.request.user:
+            serializer.save(author=self.request.user)
+        return Response(serializer.errors, status=HTTPStatus.FORBIDDEN)
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -26,4 +31,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
-        serializer.save(post=post, author=self.request.user)
+        if post.author == self.requeset.user:
+            serializer.save(post=post, author=self.request.user)
+        return Response(serializer.errors, status=HTTPStatus.FORBIDDEN)
