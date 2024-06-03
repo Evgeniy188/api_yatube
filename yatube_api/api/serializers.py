@@ -24,7 +24,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('post', 'text', 'created', 'author')
+        fields = ('id', 'post', 'text', 'created', 'author')
         read_only_fields = ('post', )
 
 
@@ -32,4 +32,4 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ('title', 'slug', 'description')
+        fields = ('id', 'title', 'slug', 'description')
