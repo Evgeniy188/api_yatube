@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
 from api.serializers import CommentSerializer, GroupSerializer, PostSerializer
-from api.utils import get_post
 from posts.models import Group, Post
 
 
@@ -38,10 +37,10 @@ class CommentViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Post, pk=self.kwargs.get('post_id'))
 
     def get_queryset(self):
-        return get_post(self).comments.all()
+        return self.get_post().comments.all()
 
     def perform_create(self, serializer):
-        serializer.save(post=get_post(self), author=self.request.user)
+        serializer.save(post=self.get_post(), author=self.request.user)
 
     def perform_update(self, serializer):
         if serializer.instance.author != self.request.user:
